@@ -1,0 +1,64 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  id                       String   @id
+  createdAt                DateTime @default(now())
+  updatedAt                DateTime
+  userId                   String
+  type                     String
+  provider                 String
+  providerAccountId        String
+  refresh_token            String?  @db.VarChar(500)
+  access_token             String?  @db.VarChar(500)
+  refresh_token_expires_in Int?
+  expires_at               Int?
+  token_type               String?
+  scope                    String?
+  id_token                 String?  @db.Text
+  session_state            String?
+  oauth_token_secret       String?
+  oauth_token              String?
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id
+  sessionToken String   @unique
+  expires      DateTime
+  userId       String?
+}
+
+model Todo {
+  id     Int     @id @default(autoincrement())
+  title  String
+  done   Boolean @default(false)
+  userId String?
+}
+
+model User {
+  id            String    @id
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime
+  name          String?
+  email         String?   @unique
+  password      String?
+  emailVerified DateTime?
+  image         String?
+  role          String?   @default("user")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
