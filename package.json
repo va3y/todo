@@ -24,7 +24,13 @@
 	},
 	"dependencies": {
 		"@prisma/client": "4.1.1",
+		"@rturnq/solid-auth0": "file:../solid-auth0/rturnq-solid-auth0-0.2.1.tgz",
+		"@trpc/client": "^9.26.2",
+		"@trpc/next": "^9.26.2",
+		"@trpc/server": "^9.26.2",
 		"@vercel/node": "^2.5.6",
-		"solid-js": "^1.4.7"
+		"solid-js": "^1.4.7",
+		"tslib": "^2.4.0",
+		"zod": "^3.17.10"
 	}
 }

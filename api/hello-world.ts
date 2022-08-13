@@ -1,17 +1,40 @@
-import type { VercelRequest, VercelResponse } from "@vercel/node";
+import * as trpc from "@trpc/server";
+import * as trpcNext from "@trpc/server/adapters/next";
+import { z } from "zod";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-const handleRequest = async (req: VercelRequest, res: VercelResponse) => {
-	await prisma.todo.create({
-		data: {
-			title: "af",
+const appRouter = trpc
+	.router()
+	.query("get-todos", {
+		async resolve() {
+			const todos = await prisma.todo.findMany({});
+
+			return todos;
+		},
+	})
+	.mutation("create-todo", {
+		input: z.object({
+			votedFor: z.number(),
+			votedAgainst: z.number(),
+		}),
+		async resolve({ input }) {
+			const voteInDb = await prisma.todo.create({
+				data: {
+					title: "asf",
+				},
+			});
+			return { success: true, vote: voteInDb };
 		},
 	});
-	const allRecords = await prisma.todo.findMany();
 
-	res.send(res.json(allRecords));
-};
+export type AppRouter = typeof appRouter;
 
-export default handleRequest;
+const createContext = (opts: trpcNext.CreateNextContextOptions) => opts;
+
+// export API handler
+export default trpcNext.createNextApiHandler({
+	router: appRouter,
+	createContext: createContext as any,
+});
