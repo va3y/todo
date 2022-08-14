@@ -16,13 +16,12 @@ const appRouter = trpc
 	})
 	.mutation("create-todo", {
 		input: z.object({
-			votedFor: z.number(),
-			votedAgainst: z.number(),
+			title: z.string(),
 		}),
-		async resolve({ input }) {
+		async resolve({ input: { title } }) {
 			const voteInDb = await prisma.todo.create({
 				data: {
-					title: "asf",
+					title,
 				},
 			});
 			return { success: true, vote: voteInDb };
