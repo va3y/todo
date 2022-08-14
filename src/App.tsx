@@ -5,7 +5,7 @@ import { createTrpcMutation, createTrpcQuery } from "./lib/trpc.ts/trpc";
 const App: Component = () => {
 	const auth = useAuth0();
 	const [userToken] = createResource(() => auth && auth.getToken());
-	const [todos] = createTrpcQuery("get-todos");
+	const [todos, { refetch }] = createTrpcQuery("get-todos");
 	const { mutate: createTodo } = createTrpcMutation("create-todo");
 	const [newTodo, setNewTodo] = createSignal("");
 	return (
@@ -21,6 +21,8 @@ const App: Component = () => {
 				onsubmit={(e) => {
 					e.preventDefault();
 					createTodo({ title: newTodo() });
+					setNewTodo("");
+					refetch();
 				}}>
 				<input
 					placeholder='add todo'
