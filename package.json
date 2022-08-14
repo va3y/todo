@@ -24,7 +24,7 @@
 	},
 	"dependencies": {
 		"@prisma/client": "4.1.1",
-		"@rturnq/solid-auth0": "file:../solid-auth0/rturnq-solid-auth0-0.2.1.tgz",
+		"@rturnq/solid-auth0": "^0.2.1",
 		"@trpc/client": "^9.26.2",
 		"@trpc/next": "^9.26.2",
 		"@trpc/server": "^9.26.2",
